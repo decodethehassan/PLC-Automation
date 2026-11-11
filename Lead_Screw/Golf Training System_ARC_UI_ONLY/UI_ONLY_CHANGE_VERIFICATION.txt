@@ -1,0 +1,46 @@
+Golf Training System - ARC UI Integration
+UI-ONLY CHANGE VERIFICATION
+
+Base supplied by user:
+  Golf Training System_Backu_Hump.zip
+
+Reference UI supplied by user:
+  Update UI Design.zip
+
+RUNTIME / MACHINE FILES VERIFIED BYTE-FOR-BYTE UNCHANGED:
+  resources/app.asar
+  resources/backend/robust_test.py
+  resources/backend/static/script.js
+  resources/backend/golf_training.db
+
+INTENDED UI CHANGES:
+  resources/backend/templates/index.html        replaced with ARC layout
+  resources/backend/static/arc-ui.css           new UI styling only
+  resources/backend/static/arc-ui.js            new presentation helpers only; calls existing functions
+  resources/backend/static/arc-ui/*.png         supplied ARC UI image assets
+
+NOT CHANGED:
+  PLC IP/port configuration
+  PLC command IDs
+  resistance scaling
+  resistance commit timing/serialization
+  hand command queue/logic
+  Flask routes/backend behavior
+  database schema/data
+  Electron executable/startup package
+
+Existing machine controls omitted from the supplied ARC mockup (operating modes,
+drop-point controls, SET DROP and live results) are retained in the UI under the
+Advanced Machine Settings gear so their existing functionality is not removed.
+STOP is retained as a dedicated button beside START for safety and behavior preservation.
+
+Sport cards other than Golf are visual-only/disabled because this supplied project
+contains Golf functionality only. No new sport backend/PLC logic has been invented.
+
+"Select by Name/Number" uses the existing trainee name system; no player-number database
+field was added, because that would be a non-UI change.
+
+Verification performed structurally in the Linux build environment. The Windows Electron
+executable itself cannot be operated against the physical PLC in this environment, so the
+final machine test should be performed on the actual training PC/PLC using the checklist
+provided in ChatGPT.

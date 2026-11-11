@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The ARC - Golf Training System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/static/arc-ui.css">
+  <script src="/static/script.js" defer></script>
+  <script src="/static/arc-ui.js" defer></script>
+</head>
+<body>
+  <main class="arc-shell">
+    <div class="arc-stage">
+      <header class="arc-header">
+        <div class="arc-brand">
+          <img src="/static/arc-ui/Logo.png" alt="Joseph's Robotics" class="arc-logo">
+          <div class="arc-brand-copy">
+            <div class="arc-brand-name">Joseph’s Robotics</div>
+            <div class="arc-brand-tagline">INTELLIGENT INNOVATION</div>
+          </div>
+        </div>
+
+        <div class="arc-title-wrap">
+          <h1>The <span>ARC</span></h1>
+          <p>One in the RANGE of the best SPORTS TRAINING<br>ROBOTS at affordable PRICES anywhere!!</p>
+        </div>
+
+        <button class="arc-advanced-trigger" type="button" onclick="arcOpenAdvanced()" title="Advanced machine settings" aria-label="Advanced machine settings">
+          <i class="fas fa-cog"></i>
+        </button>
+      </header>
+
+      <section class="arc-top-controls" aria-label="Machine controls">
+        <button id="onOffBtn" class="arc-control-btn red" type="button">POWER OFF</button>
+        <button id="resetBtn" class="arc-control-btn red arc-reset" type="button" onclick="sendResetCommand()">RESET</button>
+
+        <div class="arc-hand-selector" aria-label="Handedness">
+          <input type="radio" name="hand" id="righthand" value="righthand">
+          <label for="righthand"><span class="arc-letter">R</span> Right Hand</label>
+          <input type="radio" name="hand" id="lefthand" value="lefthand">
+          <label for="lefthand"><span class="arc-letter">L</span> Left Hand</label>
+        </div>
+      </section>
+
+      <section class="arc-main-grid">
+        <div class="arc-sport-area">
+          <h2 class="arc-section-title">Select Your Sport</h2>
+          <div class="arc-sports">
+            <button class="arc-sport-card active" type="button" aria-pressed="true">
+              <img src="/static/arc-ui/Golf.png" alt="">
+              <span>Golf</span>
+            </button>
+            <button class="arc-sport-card disabled" type="button" title="UI only - not available in the current Golf system">
+              <img src="/static/arc-ui/Baseball (Batting).png" alt="">
+              <span>Baseball (Batting)</span>
+            </button>
+            <button class="arc-sport-card disabled" type="button" title="UI only - not available in the current Golf system">
+              <img src="/static/arc-ui/Baseball (Pitching).png" alt="">
+              <span>Baseball (Pitching)</span>
+            </button>
+            <button class="arc-sport-card disabled" type="button" title="UI only - not available in the current Golf system">
+              <img src="/static/arc-ui/Tennis.png" alt="">
+              <span>Tennis</span>
+            </button>
+            <button class="arc-sport-card disabled" type="button" title="UI only - not available in the current Golf system">
+              <img src="/static/arc-ui/Soccer.png" alt="">
+              <span>Soccer</span>
+            </button>
+          </div>
+        </div>
+
+        <aside class="arc-trainee-actions" aria-label="Trainee actions">
+          <button type="button" onclick="arcRegisterTrainee()">
+            <img src="/static/arc-ui/Registration.png" alt="">
+            <span>Register/Edit<br>Trainee</span>
+          </button>
+          <button type="button" onclick="arcSelectTrainee()">
+            <img src="/static/arc-ui/Search.png" alt="">
+            <span>Select by<br>Name/Number</span>
+          </button>
+          <button type="button" onclick="arcViewPastResults()">
+            <img src="/static/arc-ui/Past Results.png" alt="">
+            <span>View Past Results</span>
+          </button>
+          <div id="arcSelectedTrainee" class="arc-selected-trainee">No trainee selected</div>
+        </aside>
+      </section>
+
+      <section class="arc-lower-grid">
+        <div class="arc-energy-wrap">
+          <div class="arc-heading-line"><span>Energy &amp; Parameters</span></div>
+          <div class="arc-energy-panel">
+            <div class="arc-res-row">
+              <div class="arc-res-label">For Back Swing:</div>
+              <button class="arc-step" type="button" onclick="arcNudgeResistance('resistanceSlider1', -1)">−</button>
+              <input type="range" id="resistanceSlider1" min="0" max="100" value="0" aria-label="Back swing resistance">
+              <button class="arc-step" type="button" onclick="arcNudgeResistance('resistanceSlider1', 1)">+</button>
+              <div class="arc-number-wrap">
+                <input type="number" inputmode="decimal" id="resistanceInput1" min="0" max="100" value="0" aria-label="Back swing resistance value">
+                <span class="arc-percent">%</span>
+                <span id="resistanceValue1" class="arc-hidden-value">0</span>
+              </div>
+            </div>
+
+            <div class="arc-res-divider"></div>
+
+            <div class="arc-res-row">
+              <div class="arc-res-label">For Forward Swing:</div>
+              <button class="arc-step" type="button" onclick="arcNudgeResistance('resistanceSlider2', -1)">−</button>
+              <input type="range" id="resistanceSlider2" min="0" max="100" value="0" aria-label="Forward swing resistance">
+              <button class="arc-step" type="button" onclick="arcNudgeResistance('resistanceSlider2', 1)">+</button>
+              <div class="arc-number-wrap">
+                <input type="number" inputmode="decimal" id="resistanceInput2" min="0" max="100" value="0" aria-label="Forward swing resistance value">
+                <span class="arc-percent">%</span>
+                <span id="resistanceValue2" class="arc-hidden-value">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="arc-assistant-wrap">
+          <div class="arc-heading-line"><span>Assistant Toggle</span></div>
+          <div class="arc-assistant-panel">
+            <div class="arc-help-label">Help Me</div>
+            <div class="arc-assistant-buttons">
+              <button id="arcAssistYes" type="button" onclick="arcSetAssistant(true)">YES</button>
+              <button id="arcAssistNo" type="button" onclick="arcSetAssistant(false)">NO</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="arc-run-controls">
+        <button id="startBtn" class="arc-start-btn grey" type="button" onclick="sendCommand()">
+          <img src="/static/arc-ui/Start.png" alt=""> <span>START</span>
+        </button>
+        <button id="stopBtn" class="arc-stop-btn red" type="button" onclick="stopCommand()" title="Stop training">
+          <i class="bi bi-stop-fill"></i><span>STOP</span>
+        </button>
+      </section>
+
+      <!-- Required existing fields kept in the DOM so the proven script.js behaves exactly as before. -->
+      <div class="arc-system-fields" aria-hidden="true">
+        <input type="text" id="currentDate" readonly>
+        <input type="text" id="userName" value="">
+        <select id="playerType" onchange="togglePlayerFields()">
+          <option value="" selected>Select User Type</option>
+          <option value="new">New User</option>
+          <option value="existing">Existing User</option>
+        </select>
+        <div id="newUserContainer"></div>
+      </div>
+
+      <div id="existingUserContainer" class="arc-modal arc-user-picker" style="display:none;">
+        <div class="arc-modal-card arc-user-card">
+          <button class="arc-modal-close" type="button" onclick="arcCloseUserPicker()">×</button>
+          <h3>Select Trainee</h3>
+          <p>Search by the existing trainee name.</p>
+          <div id="userListInjectionPoint"></div>
+        </div>
+      </div>
+
+      <div id="advancedPanel" class="arc-modal" style="display:none;">
+        <div class="arc-modal-card arc-advanced-card">
+          <button class="arc-modal-close" type="button" onclick="arcCloseAdvanced()">×</button>
+          <h3>Advanced Machine Settings</h3>
+          <p class="arc-modal-note">These are the existing Golf Training System controls, restyled and kept available without changing their PLC behavior.</p>
+
+          <div class="arc-advanced-section">
+            <h4>Operating Mode</h4>
+            <div class="arc-mode-grid">
+              <input type="radio" name="mode" id="modeResistance" value="resistance">
+              <label for="modeResistance">Resistance</label>
+              <input type="radio" name="mode" id="modeAssist" value="assist">
+              <label for="modeAssist">Assist</label>
+              <input type="radio" name="mode" id="modeRefrence" value="Reference">
+              <label for="modeRefrence">Vertical Drop</label>
+              <input type="radio" name="mode" id="modeRetro" value="retro">
+              <label for="modeRetro">Drop Assist</label>
+            </div>
+          </div>
+
+          <div class="arc-advanced-section">
+            <h4>Select Drop Points</h4>
+            <div class="arc-dials">
+              <div class="arc-dial-item">
+                <canvas id="angleDial" width="200" height="200"></canvas>
+                <label for="angleInput">Primary Drop Time</label>
+                <input type="text" id="angleInput" value="6:00">
+              </div>
+              <div class="arc-dial-item">
+                <canvas id="angleDial2" width="200" height="200"></canvas>
+                <label for="angleInput2">Secondary Drop Time</label>
+                <input type="text" id="angleInput2" value="6:00">
+              </div>
+            </div>
+            <button id="setDropBtn" class="arc-set-drop" type="button" onclick="setReferencePoint()">SET DROP</button>
+          </div>
+
+          <div class="arc-advanced-section">
+            <h4>Live Results</h4>
+            <div class="arc-results">
+              <div class="arc-result-item">
+                <div class="arc-circle-result">
+                  <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" class="progress-bg"></circle>
+                    <circle cx="50" cy="50" r="40" class="progress-bar-circle runs" stroke-dasharray="0 251.2" id="runsProgress"></circle>
+                  </svg>
+                  <div id="runCount">0</div>
+                </div>
+                <span>How Many</span>
+              </div>
+              <div class="arc-result-item">
+                <div class="arc-circle-result">
+                  <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" class="progress-bg"></circle>
+                    <circle cx="50" cy="50" r="40" class="progress-bar-circle level" stroke-dasharray="0 251.2" id="levelProgress"></circle>
+                  </svg>
+                  <div id="successRate">0%</div>
+                </div>
+                <span>Highest Level</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,1069 @@
+:root {
+  --arc-bg: #04090f;
+  --arc-orange: #f3851e;
+  --arc-white: #ffffff;
+  --arc-muted: #b8c0c8;
+  --arc-red-top: #c75f56;
+  --arc-red-bottom: #83373a;
+  --arc-grey-top: #aeb8c2;
+  --arc-grey-bottom: #414a55;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  background: #252525;
+  color: #fff;
+}
+button, input, select { font: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
+
+/*
+  ARC UI v2
+  Optimized for the training PC: 1024x768 @ 100%, maximized/full-screen.
+  The stage keeps the original 1280x800 (8:5) artwork ratio and uses the
+  largest size that fits the available Electron client area.
+*/
+.arc-shell {
+  width: 100vw;
+  height: 100vh;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #252525;
+}
+
+.arc-stage {
+  position: relative;
+  width: min(100vw, 160vh);
+  max-width: 100vw;
+  aspect-ratio: 8 / 5;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(118deg, rgba(48,54,65,.97) 0 43%, rgba(4,9,15,.98) 43.1% 100%),
+    url('/static/arc-ui/BG.png') center/cover no-repeat;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.015) inset;
+}
+
+/* ---------------- Header ---------------- */
+.arc-header { position: absolute; inset: 0 0 auto 0; height: 27.5%; }
+.arc-brand {
+  position: absolute;
+  left: 2.2%;
+  top: 4.1%;
+  width: 24.5%;
+  text-align: center;
+}
+.arc-logo {
+  display: block;
+  width: 53%;
+  height: auto;
+  max-height: 14.5vh;
+  object-fit: contain;
+  margin: 0 auto -1.1%;
+}
+.arc-brand-copy { text-align: center; }
+.arc-brand-name {
+  font-size: 2.18vw;
+  line-height: 1;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.arc-brand-tagline {
+  margin-top: .65vh;
+  padding: 0;
+  font-size: .73vw;
+  line-height: 1;
+  letter-spacing: .25vw;
+  color: #c8cdd3;
+  white-space: nowrap;
+}
+.arc-title-wrap {
+  position: absolute;
+  top: 3.0%;
+  left: 29.0%;
+  width: 68.0%;
+  text-align: center;
+}
+.arc-title-wrap h1 {
+  margin: 0;
+  font-size: 4.15vw;
+  line-height: 1.04;
+  font-weight: 600;
+}
+.arc-title-wrap h1 span { color: var(--arc-orange); }
+.arc-title-wrap p {
+  margin: .9vh 0 0;
+  font-size: 2.00vw;
+  line-height: 1.12;
+  font-weight: 400;
+}
+.arc-advanced-trigger {
+  position: absolute;
+  top: 2.3%;
+  right: 1.4%;
+  width: 2.8vw;
+  height: 2.8vw;
+  min-width: 25px;
+  min-height: 25px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.72);
+  color: #fff;
+  background: rgba(4,9,15,.72);
+  font-size: 1.15vw;
+  cursor: pointer;
+  opacity: .82;
+}
+.arc-advanced-trigger:hover { color: var(--arc-orange); border-color: var(--arc-orange); opacity: 1; }
+
+/* ---------------- Power / reset / handedness ---------------- */
+.arc-top-controls {
+  position: absolute;
+  left: 25.2%;
+  top: 22.6%;
+  width: 72.0%;
+  height: 9.5%;
+  display: grid;
+  grid-template-columns: 31% 19% 1fr;
+  gap: 2.6%;
+  align-items: center;
+  padding: .95% 1.2%;
+  border: .12vw solid #eef2f5;
+  border-radius: 1.15vw;
+  background: rgba(3,7,11,.28);
+}
+.arc-control-btn {
+  height: 100%;
+  min-width: 0;
+  padding: 0 1vw;
+  border: 0;
+  border-radius: .7vw;
+  color: #fff;
+  font-size: 1.72vw;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: filter .15s, transform .12s;
+}
+.arc-control-btn:hover { filter: brightness(1.08); }
+.arc-control-btn:active { transform: translateY(1px); }
+#onOffBtn::before,
+#resetBtn::before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: .65vw;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  filter: brightness(0) invert(1);
+}
+#onOffBtn::before { width: 2.55vw; height: 2.55vw; background-image: url('/static/arc-ui/Power.png'); }
+#resetBtn::before { width: 2.25vw; height: 2.25vw; background-image: url('/static/arc-ui/Reset.png'); }
+#onOffBtn > i, #resetBtn > i { display: none; }
+.red { background: linear-gradient(180deg, var(--arc-red-top), var(--arc-red-bottom)); }
+.green { background: linear-gradient(180deg, #57955c, #2d6035) !important; }
+.active-green { background: linear-gradient(180deg, #5f9b68, #284f31) !important; }
+.grey { background: linear-gradient(180deg, var(--arc-grey-top), var(--arc-grey-bottom)); }
+
+.arc-hand-selector {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  border-radius: 2.4vw;
+  background: #dfe3e7;
+  padding: .25vw;
+}
+.arc-hand-selector input { display: none; }
+.arc-hand-selector label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45vw;
+  color: #15181c;
+  font-size: 1.53vw;
+  border-radius: 2vw;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.arc-hand-selector input:checked + label { background: var(--arc-orange); color: #fff; box-shadow: 0 0 0 .15vw #ffad5c inset, 0 .18vw .55vw rgba(0,0,0,.28); font-weight: 600; }
+.arc-letter {
+  display: inline-grid;
+  place-items: center;
+  width: 2.55vw;
+  height: 2.55vw;
+  border-radius: 50%;
+  border: .14vw solid #6c737c;
+  font-size: 1.5vw;
+  background: #fff;
+}
+
+/* ---------------- Sport cards / trainee actions ---------------- */
+.arc-main-grid {
+  position: absolute;
+  left: 2.2%;
+  top: 33.0%;
+  width: 95.6%;
+  height: 30.8%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 17.4%;
+  gap: 1.9%;
+}
+.arc-sport-area { min-width: 0; display: grid; grid-template-rows: auto 1fr; }
+.arc-section-title {
+  margin: 0 0 1.7%;
+  color: var(--arc-orange);
+  font-size: 2.05vw;
+  line-height: 1;
+  font-weight: 400;
+}
+.arc-sports {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1.75%;
+}
+.arc-sport-card {
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  padding: 5.5% 4% 6%;
+  border: 0;
+  border-radius: .95vw;
+  overflow: hidden;
+  background: linear-gradient(145deg, #fff 0%, #dfe4e9 53%, #95a1ad 100%);
+  color: #0c1117;
+  cursor: default;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: end;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72);
+}
+.arc-sport-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  object-position: center;
+  filter: brightness(.1);
+}
+.arc-sport-card span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.15em;
+  margin-top: .3vh;
+  font-size: 1.33vw;
+  line-height: 1.05;
+  white-space: normal;
+  text-align: center;
+}
+.arc-sport-card.active { outline: .13vw solid rgba(255,255,255,.28); }
+.arc-sport-card.disabled { opacity: .98; }
+
+.arc-trainee-actions {
+  min-height: 0;
+  padding-top: 15.3%;
+  display: grid;
+  grid-template-rows: repeat(3, minmax(0, 1fr)) auto;
+  gap: 4.2%;
+}
+.arc-trainee-actions > button {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 4% 5%;
+  display: grid;
+  grid-template-columns: 25% 1fr;
+  gap: 4%;
+  align-items: center;
+  text-align: left;
+  color: #fff;
+  background: rgba(4,9,15,.82);
+  border: .14vw solid var(--arc-orange);
+  border-radius: .68vw;
+  cursor: pointer;
+}
+.arc-trainee-actions > button:hover { background: rgba(243,133,30,.10); }
+.arc-trainee-actions img {
+  width: 100%;
+  height: 100%;
+  max-height: 4.0vw;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+.arc-trainee-actions span {
+  font-size: 1.22vw;
+  line-height: 1.10;
+}
+.arc-selected-trainee {
+  margin-top: -.2vh;
+  font-size: .76vw;
+  line-height: 1;
+  color: #c7cdd4;
+  text-align: center;
+  opacity: .82;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------------- Energy / Assistant ---------------- */
+.arc-lower-grid {
+  position: absolute;
+  left: 10.1%;
+  top: 65.2%;
+  width: 84.0%;
+  height: 20.3%;
+  display: grid;
+  grid-template-columns: minmax(0, 3.4fr) minmax(0, 1.12fr);
+  gap: 5.7%;
+  align-items: stretch;
+}
+.arc-energy-wrap,
+.arc-assistant-wrap { min-width: 0; display: grid; grid-template-rows: auto 1fr; }
+.arc-heading-line {
+  display: flex;
+  align-items: center;
+  gap: 1.0vw;
+  color: var(--arc-orange);
+  font-size: 1.92vw;
+  line-height: 1;
+  white-space: nowrap;
+  margin-bottom: 1.05%;
+}
+.arc-heading-line::before,
+.arc-heading-line::after { content: ''; height: .10vw; flex: 1; background: var(--arc-orange); opacity: .95; }
+.arc-energy-panel {
+  min-height: 0;
+  height: 100%;
+  border: .14vw solid #f2f5f7;
+  border-radius: 1.05vw;
+  padding: 1.2% 1.65%;
+  background: rgba(5,10,15,.62);
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  align-items: center;
+}
+.arc-res-row {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 34% 5% minmax(0, 1fr) 5% 14%;
+  gap: 1.5%;
+  align-items: center;
+}
+.arc-res-label { font-size: 1.67vw; line-height: 1; white-space: nowrap; }
+.arc-step {
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: .13vw solid #f2f4f6;
+  border-radius: .5vw;
+  background: #39414c;
+  color: white;
+  font-size: 1.75vw;
+  line-height: 1;
+  cursor: pointer;
+}
+.arc-res-divider { height: .08vw; background: #cad0d5; margin: .3vh 0; }
+.arc-res-row input[type="range"] {
+  appearance: none;
+  width: 100%;
+  height: .65vw;
+  border-radius: .5vw;
+  outline: none;
+  background: linear-gradient(90deg, var(--arc-orange) 0 50%, #d7dbe0 50% 100%);
+  cursor: pointer;
+}
+.arc-res-row input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.55vw;
+  height: 1.55vw;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fff 0 28%, #d2d7dc 45%, #9099a3 100%);
+  box-shadow: 0 1px .3vw rgba(0,0,0,.6);
+}
+.arc-number-wrap { position: relative; display: flex; align-items: stretch; height: 3.55vw; }
+.arc-number-wrap input {
+  width: 100%;
+  min-width: 0;
+  padding: .1vh 1.85vw .1vh .45vw;
+  border: .08vw solid #38414b;
+  border-radius: .62vw;
+  background: #080e14;
+  color: #fff;
+  font-size: 1.92vw;
+  text-align: center;
+  outline: none;
+}
+.arc-number-wrap input::-webkit-inner-spin-button { opacity: 1; width: 1.45vw; }
+.arc-percent, .arc-hidden-value { display: none; }
+
+.arc-assistant-wrap .arc-heading-line::before,
+.arc-assistant-wrap .arc-heading-line::after { display: none; }
+.arc-assistant-wrap .arc-heading-line { justify-content: center; }
+.arc-assistant-panel {
+  min-height: 0;
+  height: 100%;
+  border: .14vw solid #f2f5f7;
+  border-radius: 1.05vw;
+  background: rgba(5,10,15,.70);
+  padding: 8% 8% 7%;
+  text-align: center;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8%;
+}
+.arc-help-label { font-size: 2.02vw; line-height: 1; margin: 0; }
+.arc-assistant-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 13%; align-items: stretch; }
+.arc-assistant-buttons button {
+  height: auto;
+  border: 0;
+  border-radius: .65vw;
+  background: #dce0e4;
+  color: #14181d;
+  font-size: 1.22vw;
+  font-weight: 700;
+  cursor: pointer;
+}
+.arc-assistant-buttons button.selected { color: #fff; background: linear-gradient(180deg, #f38a1e, #bd5403); }
+
+
+/* Assist mode: resistance controls are intentionally locked while the PLC is in Assist. */
+.arc-energy-panel.arc-assist-locked .arc-step,
+.arc-energy-panel.arc-assist-locked input[type="range"],
+.arc-energy-panel.arc-assist-locked .arc-number-wrap input {
+  cursor: not-allowed !important;
+}
+.arc-energy-panel.arc-assist-locked .arc-step,
+.arc-energy-panel.arc-assist-locked input[type="range"] {
+  opacity: .48;
+}
+.arc-energy-panel.arc-assist-locked .arc-number-wrap input {
+  opacity: 1;
+  color: #fff;
+  font-weight: 700;
+  border-color: rgba(243,133,30,.55);
+  background: rgba(11,18,25,.96);
+}
+
+/* ---------------- START / STOP ---------------- */
+.arc-run-controls {
+  position: absolute;
+  left: 36.0%;
+  top: 88.5%;
+  width: 34.4%;
+  height: 9.8%;
+  display: grid;
+  grid-template-columns: 1fr 22%;
+  gap: 3.2%;
+}
+.arc-start-btn,
+.arc-stop-btn { height: 100%; min-height: 0; }
+.arc-start-btn {
+  border: 0;
+  border-radius: 1.0vw;
+  color: #fff;
+  font-size: 2.65vw;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55vw;
+  cursor: pointer;
+}
+.arc-start-btn img { width: 4.55vw; height: 4.55vw; object-fit: contain; filter: brightness(0) invert(1); }
+.arc-stop-btn {
+  border: 0;
+  border-radius: 1.0vw;
+  color: #fff;
+  font-size: .92vw;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  gap: .12vh;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.arc-stop-btn i { display: none; }
+.arc-stop-btn::before { content: '■'; font-size: 1.55vw; line-height: 1; }
+
+.arc-system-fields {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+}
+
+/* ---------------- Modals ----------------
+   Use viewport-relative dimensions so they do not become tiny when Chromium
+   is zoomed on the low-resolution training display.
+*/
+.arc-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2.1vh 2.2vw;
+  background: rgba(0,0,0,.84);
+  backdrop-filter: blur(4px);
+}
+.arc-modal-card {
+  position: relative;
+  width: 66vw;
+  max-width: none;
+  max-height: 91vh;
+  overflow: auto;
+  padding: 2.0vw;
+  border: .14vw solid rgba(243,133,30,.88);
+  border-radius: 1.2vw;
+  background: linear-gradient(145deg, #151c25, #070b10);
+  box-shadow: 0 2.2vh 5vw rgba(0,0,0,.68);
+}
+.arc-modal-card h3 { margin: 0 4vw .5vh 0; color: var(--arc-orange); font-size: 2.0vw; line-height: 1.05; font-weight: 500; }
+.arc-modal-card p { color: #bec6cf; font-size: 1.0vw; }
+.arc-modal-close {
+  position: absolute;
+  right: 1.1vw;
+  top: .75vw;
+  width: 2.7vw;
+  height: 2.7vw;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 2.3vw;
+  line-height: 1;
+  cursor: pointer;
+}
+.arc-user-card { width: 54vw; }
+.arc-user-card #userSearchInput {
+  width: 100% !important;
+  padding: 1.0vw 1.1vw !important;
+  border: .08vw solid #7a858f !important;
+  border-radius: .65vw !important;
+  background: #f5f7f8 !important;
+  color: #12171c !important;
+  font-size: 1.25vw !important;
+}
+.arc-user-card #userListContainer {
+  max-height: 44vh !important;
+  margin-top: .6vh !important;
+  border: .08vw solid #5f6974 !important;
+  border-radius: .65vw !important;
+  overflow: auto !important;
+}
+
+.arc-advanced-card { width: 70vw; }
+.arc-modal-note { margin: 0 0 1.2vh; font-size: .86vw !important; }
+.arc-advanced-section {
+  margin-top: 1.3vh;
+  padding: 1.0vw;
+  border: .08vw solid rgba(255,255,255,.17);
+  border-radius: .85vw;
+  background: rgba(255,255,255,.025);
+}
+.arc-advanced-section h4 { margin: 0 0 .8vh; color: #fff; font-size: 1.2vw; }
+.arc-mode-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .7vw; }
+.arc-mode-grid input { display: none; }
+.arc-mode-grid label {
+  padding: .8vw .5vw;
+  border: .08vw solid #d2d7dc;
+  border-radius: .6vw;
+  color: #fff;
+  font-size: .98vw;
+  text-align: center;
+  cursor: pointer;
+}
+.arc-mode-grid input:checked + label { background: var(--arc-orange); border-color: var(--arc-orange); color: #111; font-weight: 700; }
+.arc-dials { display: grid; grid-template-columns: 1fr 1fr; gap: 2.0vw; }
+.arc-dial-item { display: grid; justify-items: center; gap: .5vh; color: #d6dce2; font-size: .92vw; }
+.arc-dial-item canvas { width: 12.2vw; height: 12.2vw; max-width: 100%; }
+.arc-dial-item input {
+  width: 9.5vw;
+  padding: .5vw .6vw;
+  border: .08vw solid #7a858f;
+  border-radius: .55vw;
+  background: #111820;
+  color: #fff;
+  font-size: .95vw;
+  text-align: center;
+}
+.arc-set-drop {
+  display: block;
+  width: 100%;
+  margin-top: 1.0vh;
+  padding: .7vw;
+  border: 0;
+  border-radius: .55vw;
+  background: var(--arc-orange);
+  color: #111;
+  font-size: .95vw;
+  font-weight: 700;
+  cursor: pointer;
+}
+.arc-results { display: flex; justify-content: center; gap: 6vw; }
+.arc-result-item { text-align: center; color: #cbd3db; font-size: .9vw; }
+.arc-circle-result { position: relative; width: 8.7vw; height: 8.7vw; }
+.arc-circle-result svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.arc-circle-result circle { fill: none; stroke-width: 9; }
+.progress-bg { stroke: #303943; }
+.progress-bar-circle { stroke-linecap: round; transition: stroke-dasharray .3s; }
+.progress-bar-circle.runs { stroke: #f3851e; }
+.progress-bar-circle.level { stroke: #8bbbdc; }
+.arc-circle-result > div { position: absolute; inset: 0; display: grid; place-items: center; font-size: 1.6vw; font-weight: 700; }
+
+/* Existing dynamically created user modals: same behavior, ARC treatment. */
+#newUserModal > div,
+#userDetailsModal > div {
+  width: 68vw !important;
+  max-width: none !important;
+  margin: 5vh auto !important;
+  padding: 2.3vw !important;
+  border-color: rgba(243,133,30,.72) !important;
+  background: linear-gradient(145deg, #171e27, #080c11) !important;
+}
+#newUserModal > div { width: 48vw !important; }
+#newUserModal button,
+#userDetailsModal button { border-radius: .6vw !important; }
+
+/* Extra insurance for very short client areas. */
+@media (max-aspect-ratio: 7/5) {
+  .arc-stage { width: 160vh; max-width: 100vw; }
+}
+
+/* ======================================================================
+   ARC UI v3 — 1024x768 final geometry pass
+   Visual-only overrides based on the real training-PC screenshots and the
+   supplied 1280x800 ARC artwork. No PLC/backend behavior is changed here.
+   ====================================================================== */
+
+/* The supplied Logo.png already contains the gear, Joseph's Robotics name,
+   and INTELLIGENT INNOVATION tagline. Do not print the brand a second time. */
+.arc-brand {
+  left: 2.2%;
+  top: 4.0%;
+  width: 22.2%;
+  text-align: center;
+}
+.arc-logo {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  margin: 0;
+  object-fit: contain;
+}
+.arc-brand-copy { display: none; }
+
+/* Match the title block more closely to the supplied ARC artwork. */
+.arc-title-wrap {
+  top: 3.7%;
+  left: 31.0%;
+  width: 64.5%;
+}
+.arc-title-wrap h1 { font-size: 4.2vw; }
+.arc-title-wrap p {
+  margin-top: .75vh;
+  font-size: 1.95vw;
+  line-height: 1.12;
+}
+
+/* Exact main-content proportions from the reference 1280x800 artboard:
+   sport/title area begins near x=28/y=255; trainee controls end near x=1238. */
+.arc-main-grid {
+  left: 2.1875%;
+  top: 31.875%;
+  width: 94.53125%;
+  height: 30.75%;
+  grid-template-columns: minmax(0, 1fr) 16.796875vw;
+  column-gap: 1.875vw;
+}
+.arc-section-title {
+  margin-bottom: 1.25vh;
+  font-size: 2.25vw;
+}
+
+/* Sport cards in the reference are 194px tall on the 1280x800 artboard.
+   Using viewport-width units keeps that exact proportion on 1024x768. */
+.arc-sports {
+  height: min(15.15625vw, 24.25vh);
+  align-self: start;
+  grid-template-columns: 169fr 188fr 188fr 169fr 169fr;
+  column-gap: 1.71875vw;
+}
+.arc-sport-card {
+  height: 100%;
+  padding: 5.2% 4% 5.2%;
+}
+.arc-sport-card span {
+  min-height: 1.35em;
+  margin-top: .2vh;
+  font-size: 1.28vw;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+.arc-sport-card:nth-child(2) span,
+.arc-sport-card:nth-child(3) span {
+  font-size: 1.18vw;
+}
+
+/* Keep the three trainee buttons at the reference positions while the sport
+   cards stop above Energy & Parameters instead of overlapping it. */
+.arc-trainee-actions {
+  padding-top: 17.8%;
+  gap: 4.6%;
+}
+.arc-trainee-actions > button {
+  border-width: .12vw;
+  border-radius: .62vw;
+}
+.arc-trainee-actions span { font-size: 1.16vw; }
+.arc-selected-trainee { font-size: .72vw; }
+
+/* Reference lower panels: Energy 712px wide, 61px gap, Assistant 237px wide
+   on the original 1280px artboard. */
+.arc-lower-grid {
+  left: 10.078125%;
+  top: 65.2%;
+  width: 78.90625%;
+  grid-template-columns: 55.625vw 18.515625vw;
+  column-gap: 4.765625vw;
+}
+.arc-heading-line { font-size: 1.9vw; }
+.arc-res-label { font-size: 1.58vw; }
+.arc-number-wrap { height: 3.35vw; }
+.arc-number-wrap input { font-size: 1.82vw; }
+.arc-help-label { font-size: 1.95vw; }
+
+/* The supplied START button is 64px tall on the 800px-high artboard. */
+.arc-run-controls {
+  left: 35.859375%;
+  top: 88.75%;
+  width: 34.55%;
+  height: 8.0%;
+}
+.arc-start-btn { border-radius: .85vw; }
+.arc-stop-btn { border-radius: .85vw; }
+.arc-start-btn img {
+  width: 4.0vw;
+  height: 4.0vw;
+}
+
+/* Keep all UI inside the fixed training display without browser scrollbars. */
+html, body, .arc-shell { overflow: hidden !important; }
+
+/* ======================================================================
+   ARC UI v4 — reference-match polish for 1024x768 @ 100%
+   CSS ONLY.  No machine/PLC/backend behavior is changed.
+   ====================================================================== */
+
+/* Header: v3 proved the geometry is stable, but percentages inside
+   .arc-header are relative to the header's 27.5% height. Shift the artwork
+   down to the location in the supplied 1280x800 reference and restore the
+   stronger title/subtitle scale. */
+.arc-brand {
+  top: 13.5%;
+}
+.arc-title-wrap {
+  top: 13.0%;
+}
+.arc-title-wrap h1 {
+  font-size: 5.0vw;
+  line-height: 1.0;
+}
+.arc-title-wrap p {
+  margin-top: .9vh;
+  font-size: 2.25vw;
+  line-height: 1.10;
+}
+
+/* The original sport-card captions are deliberately prominent.  Keep the
+   exact v3 card geometry but reserve a little more room for readable labels
+   and slightly more breathing room around the artwork. */
+.arc-sport-card {
+  padding: 5.0% 4.0% 6.2%;
+}
+.arc-sport-card img {
+  width: 93%;
+  height: 93%;
+  justify-self: center;
+  align-self: center;
+}
+.arc-sport-card span {
+  min-height: 1.55em;
+  margin-top: .15vh;
+  font-size: 1.62vw;
+  line-height: 1.0;
+}
+.arc-sport-card:nth-child(2) span,
+.arc-sport-card:nth-child(3) span {
+  font-size: 1.43vw;
+}
+
+/* Trainee controls: match the visual weight of the reference at this low
+   resolution instead of allowing the labels to become too fine. */
+.arc-trainee-actions span {
+  font-size: 1.30vw;
+  line-height: 1.08;
+}
+.arc-selected-trainee {
+  font-size: .78vw;
+}
+
+/* Lower section in the supplied mockup sits a few pixels higher than v3. */
+.arc-lower-grid {
+  top: 64.3%;
+}
+.arc-heading-line {
+  font-size: 2.02vw;
+}
+.arc-res-row {
+  grid-template-columns: 37.5% 5% minmax(0, 1fr) 5% 14%;
+  gap: 1.35%;
+}
+.arc-res-label {
+  font-size: 1.82vw;
+}
+.arc-step {
+  font-size: 1.82vw;
+}
+.arc-number-wrap input {
+  font-size: 1.92vw;
+}
+.arc-help-label {
+  font-size: 2.12vw;
+}
+.arc-assistant-buttons button {
+  font-size: 1.28vw;
+}
+
+/* Reference START position/weight. STOP remains adjacent because it is an
+   existing safety/control function that must stay accessible. */
+.arc-run-controls {
+  top: 89.7%;
+}
+.arc-start-btn {
+  font-size: 2.95vw;
+}
+.arc-start-btn img {
+  width: 4.15vw;
+  height: 4.15vw;
+}
+.arc-stop-btn {
+  font-size: .96vw;
+}
+
+/* Advanced settings: geometry is already good; only increase readability.
+   This remains purely cosmetic. */
+.arc-modal-card h3 {
+  font-size: 2.12vw;
+}
+.arc-modal-note {
+  font-size: .94vw !important;
+}
+.arc-advanced-section h4 {
+  font-size: 1.32vw;
+}
+.arc-mode-grid label {
+  font-size: 1.06vw;
+}
+.arc-dial-item {
+  font-size: 1.00vw;
+}
+.arc-dial-item input {
+  font-size: 1.02vw;
+}
+.arc-set-drop {
+  font-size: 1.02vw;
+}
+.arc-result-item {
+  font-size: .98vw;
+}
+.arc-circle-result > div {
+  font-size: 1.70vw;
+}
+
+/* ============================================================
+   ARC UI v5 – trainee action sizing polish for 1024×768
+   Keeps all functionality/IDs unchanged; visual CSS only.
+   Matches the supplied ARC reference more closely:
+   - narrower trainee action column
+   - Register/Edit and Select buttons retain matching heights
+   - View Past Results is intentionally shorter
+   - slightly tighter icon/text proportions
+   ============================================================ */
+.arc-main-grid {
+  grid-template-columns: minmax(0, 1fr) 15.6%;
+  gap: 1.75%;
+}
+
+.arc-trainee-actions {
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) minmax(0, .72fr) auto;
+  gap: 4.0%;
+}
+
+.arc-trainee-actions > button {
+  padding: 3.6% 4.5%;
+  grid-template-columns: 23% 1fr;
+  gap: 4.5%;
+}
+
+.arc-trainee-actions span {
+  font-size: 1.10vw;
+  line-height: 1.08;
+}
+
+.arc-trainee-actions img {
+  max-height: 3.55vw;
+}
+
+.arc-trainee-actions > button:nth-child(3) {
+  padding-top: 3.0%;
+  padding-bottom: 3.0%;
+}
+
+.arc-trainee-actions > button:nth-child(3) img {
+  max-height: 3.15vw;
+}
+
+.arc-trainee-actions > button:nth-child(3) span {
+  font-size: 1.04vw;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   ARC UI v6 – View Past Results icon polish
+   CSS-only. No HTML/JS/backend/PLC changes.
+   The v5 button dimensions are retained; only the third trainee
+   action icon is reduced to match the supplied ARC reference.
+   ============================================================ */
+.arc-trainee-actions > button:nth-child(3) img {
+  width: auto;
+  height: auto;
+  max-width: 2.75vw;
+  max-height: 2.50vw;
+  justify-self: center;
+  align-self: center;
+}
+
+/* ============================================================
+   ARC UI v7 – sport selection, "Coming soon", date and trainee name
+   CSS-only additions. No PLC/backend behavior is changed.
+   - Golf is clickable and turns orange when selected
+   - Other sports show a small "Coming soon" note
+   - Today's date sits beside START (left)
+   - Trainee name is large, beside STOP (right)
+   ============================================================ */
+
+/* Golf: clickable; selected = orange */
+.arc-sport-card:not(.disabled) { cursor: pointer; }
+.arc-sport-card:not(.disabled):hover { filter: brightness(1.04); }
+.arc-sport-card.active {
+  background: linear-gradient(145deg, #ffc48a 0%, #f3851e 52%, #b85a0b 100%);
+  outline: none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55),
+              0 0 0 .14vw #ffd2a1,
+              0 .3vw 1.1vw rgba(243,133,30,.45);
+}
+
+/* Other sports: small "Coming soon" under the name, not clickable */
+.arc-sport-card.disabled {
+  cursor: not-allowed;
+  grid-template-rows: minmax(0, 1fr) auto auto;
+}
+.arc-sport-card.disabled img {
+  width: 86%;
+  height: 86%;
+}
+.arc-sport-card.disabled span {
+  min-height: 1.2em;
+}
+.arc-soon {
+  display: block;
+  margin-top: .15vh;
+  font-size: .86vw;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #b4540a;
+}
+
+/* Keeps the trainee buttons the same size as before (name moved beside STOP) */
+.arc-trainee-spacer { visibility: hidden; }
+
+/* Date: left of START */
+.arc-date {
+  position: absolute;
+  left: 7.5%;
+  width: 27.5%;
+  top: 89.7%;
+  height: 8.0%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: #fff;
+  font-size: 1.85vw;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Trainee name: right of STOP */
+.arc-trainee-badge {
+  position: absolute;
+  left: 72.6%;
+  width: 24.6%;
+  top: 89.7%;
+  height: 8.0%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: .3vh;
+  min-width: 0;
+}
+.arc-trainee-caption {
+  font-size: .86vw;
+  line-height: 1;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--arc-orange);
+}
+.arc-trainee-name {
+  max-width: 100%;
+  font-size: 1.85vw;
+  font-weight: 700;
+  line-height: 1.08;
+  color: #fff;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.arc-trainee-name.is-empty {
+  font-size: 1.25vw;
+  font-weight: 400;
+  color: #aab2bb;
+}
